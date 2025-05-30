@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio Java - Condicional Aninhada</title>
+  <style>
+    body {
+      background-color: #272822;
+      color: #f8f8f2;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #444;
+      overflow-x: auto;
+    }
+    .keyword { color: #66d9ef; }
+    .number { color: #ae81ff; }
+    .comment { color: #75715e; font-style: italic; }
+    input, button {
+      font-family: inherit;
+      padding: 0.5rem;
+      margin-top: 1rem;
+    }
+    .resposta {
+      margin-top: 1rem;
+      color: #a6e22e;
+    }
+  </style>
+</head>
+<body>
+
+<h2>2) O que será impresso?</h2>
+
+<pre id="codigoJava"></pre>
+
+<label for="respostaUsuario">Sua resposta:</label>
+<input type="number" id="respostaUsuario">
+<br>
+<button onclick="mostrarResposta()">Ver resposta</button>
+
+<div id="respostaCorreta" class="resposta"></div>
+
+<script>
+  // Geração de valores aleatórios
+  const A = Math.floor(Math.random() * 7);  // 0 a 6
+  const B = Math.floor(Math.random() * 15); // 0 a 14
+  let C;
+
+  if (A < 5) {
+    if (B < 10) {
+      C = A + B;
+    } else {
+      C = A - B;
+    }
+  } else {
+    if (B > 9) {
+      C = B + 3;
+    } else {
+      C = B * 2;
+    }
+  }
+
+  const resultado = A + B + C;
+
+  const codigo = `
+<span class="keyword">int</span> A = <span class="number">${A}</span>, B = <span class="number">${B}</span>, C;
+<span class="keyword">if</span> (A &lt; 5)
+  <span class="keyword">if</span> (B &lt; 10)
+    C = A + B;
+  <span class="keyword">else</span>
+    C = A - B;
+<span class="keyword">else</span>
+  <span class="keyword">if</span> (B &gt; 9)
+    C = B + 3;
+  <span class="keyword">else</span>
+    C = B * 2;
+
+System.out.println(A + B + C);
+  `.trim();
+
+  document.getElementById("codigoJava").innerHTML = codigo;
+
+  function mostrarResposta() {
+    const usuario = parseInt(document.getElementById("respostaUsuario").value);
+    const mensagem = usuario === resultado
+      ? `✅ Correto! O resultado é ${resultado}.`
+      : `❌ Errado. O resultado correto é ${resultado}.`;
+    document.getElementById("respostaCorreta").innerText = mensagem;
+  }
+</script>
+
+</body>
+</html>

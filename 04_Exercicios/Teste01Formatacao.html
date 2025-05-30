@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercícios Aleatórios de Impressão em Java</title>
+  <style>
+    body {
+      background-color: #272822;
+      color: #f8f8f2;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+    .codigo {
+      background-color: #1e1f1c;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 5px #000;
+      white-space: pre-wrap;
+    }
+    .verde { color: #a6e22e; }
+    .amarelo { color: #e6db74; }
+    input {
+      background-color: #1e1f1c;
+      color: #f8f8f2;
+      border: 1px solid #555;
+      padding: 5px;
+      margin-top: 5px;
+      width: 120px;
+      font-family: 'Courier New', monospace;
+    }
+    button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      background-color: #66d9ef;
+      color: #272822;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .correto {
+      color: #a6e22e;
+    }
+    .errado {
+      color: #f92672;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exercícios Aleatórios de Impressão em Java</h1>
+  <div id="exercicios"></div>
+  <button onclick="verificar()">Verificar Respostas</button>
+
+  <script>
+    const valores = {}; // armazenar os valores aleatórios e resultados
+
+    function gerarNumero(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function formatJavaFloat(num) {
+      return num.toFixed(6);
+    }
+
+    function gerarExercicios() {
+      const container = document.getElementById("exercicios");
+      container.innerHTML = "";
+
+      // 1) %d com resto de divisão
+      const a1 = gerarNumero(10, 99);
+      const b1 = gerarNumero(2, 10);
+      valores[1] = {
+        texto: `System.out.printf(<span class="amarelo">"%d"</span>, <span class="verde">${a1} % ${b1}</span>);`,
+        resultado: (a1 % b1).toString()
+      };
+
+      // 2) %f com divisão de inteiros (resultado formatado como float)
+      const a2 = gerarNumero(10, 99);
+      const b2 = gerarNumero(2, 10);
+      const intDiv = Math.floor(a2 / b2);
+      valores[2] = {
+        texto: `System.out.printf(<span class="amarelo">"%f"</span>, <span class="verde">${a2} / ${b2}</span>);`,
+        resultado: formatJavaFloat(intDiv)
+      };
+
+      // 3) %o (octal)
+      const a3 = gerarNumero(10, 99);
+      valores[3] = {
+        texto: `System.out.printf(<span class="amarelo">"%o"</span>, <span class="verde">${a3}</span>);`,
+        resultado: a3.toString(8)
+      };
+
+      // 4) %x (hexadecimal)
+      const a4 = gerarNumero(10, 99);
+      valores[4] = {
+        texto: `System.out.printf(<span class="amarelo">"%x"</span>, <span class="verde">${a4}</span>);`,
+        resultado: a4.toString(16)
+      };
+
+      // 5) %05.2f
+      const a5 = (Math.random() * 100).toFixed(4);
+      const formatted = Number(a5).toFixed(2).padStart(5, '0');
+      valores[5] = {
+        texto: `System.out.printf(<span class="amarelo">"%05.2f"</span>, <span class="verde">${a5}</span>);`,
+        resultado: formatted
+      };
+
+      // Renderizar exercícios com inputs
+      for (let i = 1; i <= 5; i++) {
+        const bloco = document.createElement("div");
+        bloco.className = "codigo";
+        bloco.innerHTML = `
+          ${valores[i].texto}
+          <br><input type="text" id="resposta${i}" placeholder="Sua resposta">
+          <div id="feedback${i}"></div>
+        `;
+        container.appendChild(bloco);
+      }
+    }
+
+    function verificar() {
+      for (let i = 1; i <= 5; i++) {
+        const input = document.getElementById(`resposta${i}`).value.trim();
+        const feedback = document.getElementById(`feedback${i}`);
+        const esperado = valores[i].resultado;
+
+        if (input === esperado) {
+          feedback.innerHTML = "<span class='correto'>✔ Correto!</span>";
+        } else {
+          feedback.innerHTML = `<span class='errado'>✘ Errado. Resposta correta: ${esperado}</span>`;
+        }
+      }
+    }
+
+    gerarExercicios(); // Executar ao abrir a página
+  </script>
+</body>
+</html>

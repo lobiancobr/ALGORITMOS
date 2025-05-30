@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercícios de Switch - Monokai</title>
+  <style>
+    body {
+      background-color: #272822;
+      color: #f8f8f2;
+      font-family: monospace;
+      padding: 20px;
+    }
+    .code {
+      background-color: #1e1f1c;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+      font-size: 16px;
+    }
+    input[type="text"] {
+      width: 100px;
+      padding: 5px;
+      background-color: #3e3d32;
+      color: #f8f8f2;
+      border: 1px solid #75715e;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    button {
+      background-color: #66d9ef;
+      border: none;
+      padding: 5px 10px;
+      color: #272822;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>O que será impresso?</h1>
+  <div id="exercicios"></div>
+
+  <script>
+    function gerarExercicios() {
+      const container = document.getElementById('exercicios');
+      container.innerHTML = '';
+      const exercicios = [
+        function () {
+          let A = Math.floor(Math.random() * 10);
+          let B = Math.floor(Math.random() * 20) + 1;
+          let C;
+          let codigo = `int A = ${A}, B = ${B}, C;\nswitch (B % 4)\n{\n  case 0 : A += 4;\n  case 2 : B +=6;\n  case 3 : C = 8;\n  default: C = (C === undefined) ? 5 : C;\n};\nSystem.out.println( A + B - C);`;
+          let output = (() => {
+            let tempA = A;
+            let tempB = B;
+            let tempC;
+            switch (tempB % 4) {
+              case 0: tempA += 4;
+              case 2: tempB += 6;
+              case 3: tempC = 8;
+              default:
+                if (tempC === undefined) tempC = 5;
+            }
+            return tempA + tempB - tempC;
+          })();
+          return { codigo, output };
+        },
+        function () {
+          let A = 14, B = Math.floor(Math.random() * 20) + 1, C = 35;
+          let codigo = `int A = ${A}, B = ${B}, C = ${C};\nswitch (B % 4)\n{\n  case 0 : System.out.print( A % 5);\n  case 2 : System.out.print( C % 4);\n  case 3 : System.out.print( B % 3);\n  default : System.out.print( B % 2);\n};`;
+          let resultado = '';
+          switch (B % 4) {
+            case 0: resultado += (A % 5);
+            case 2: resultado += (C % 4);
+            case 3: resultado += (B % 3);
+            default: resultado += (B % 2);
+          }
+          return { codigo, output: resultado };
+        },
+        function () {
+          let M = Math.floor(Math.random() * 30) + 10;
+          let codigo = `int M = ${M};\nswitch (M % 6)\n{\n  case 0 : System.out.print( M % 2);\n  case 1 : System.out.print( M % 5);\n  case 2 : System.out.print( M % 4); break;\n  case 3 : System.out.print( M % 6);\n  case 4 : System.out.print( M % 3); break;\n  default : System.out.print( M % 7);\n};`;
+          let resultado = '';
+          switch (M % 6) {
+            case 0: resultado += (M % 2);
+            case 1: resultado += (M % 5);
+            case 2: resultado += (M % 4); break;
+            case 3: resultado += (M % 6);
+            case 4: resultado += (M % 3); break;
+            default: resultado += (M % 7);
+          }
+          return { codigo, output: resultado };
+        },
+        function () {
+          let i = Math.floor(Math.random() * 100);
+          let codigo = `int i = ${i};\nswitch( i % 7)\n{\n  case 6: System.out.print( i % 9);\n  case 4: System.out.print( i % 6);\n  case 2: System.out.print( i % 3);\n  case 1: System.out.print( i % 4);\n  case 3: System.out.print( i % 2);\n  default: System.out.print( i % 5);\n}`;
+          let resultado = '';
+          switch (i % 7) {
+            case 6: resultado += (i % 9);
+            case 4: resultado += (i % 6);
+            case 2: resultado += (i % 3);
+            case 1: resultado += (i % 4);
+            case 3: resultado += (i % 2);
+            default: resultado += (i % 5);
+          }
+          return { codigo, output: resultado };
+        }
+      ];
+
+      exercicios.forEach((gerarExercicio, index) => {
+        const { codigo, output } = gerarExercicio();
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <div class="code">${codigo}</div>
+          <label>Resposta: <input type="text" id="resposta${index}" /></label>
+          <button onclick="verificar(${index}, '${output}')">Verificar</button>
+          <div class="result" id="result${index}"></div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function verificar(index, respostaCerta) {
+      const entrada = document.getElementById('resposta' + index);
+      const resultado = document.getElementById('result' + index);
+      if (entrada.value === respostaCerta.toString()) {
+        resultado.innerText = '✔️ Correto';
+        resultado.style.color = '#a6e22e';
+      } else {
+        resultado.innerText = `❌ Incorreto. Correto: ${respostaCerta}`;
+        resultado.style.color = '#f92672';
+      }
+    }
+
+    gerarExercicios();
+  </script>
+</body>
+</html>

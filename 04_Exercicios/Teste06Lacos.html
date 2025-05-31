@@ -1,71 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Exercícios de Laços em Java - Parte 2</title>
-  <style>
-    body {
-      background-color: #272822;
-      color: #f8f8f2;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 20px;
-    }
-    .exercise {
-      background-color: #1e1f1c;
-      border: 1px solid #3e3d32;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-    .code pre {
-      color: #a6e22e;
-      white-space: pre-wrap;
-    }
-    .input-label {
-      color: #66d9ef;
-    }
-    input {
-      background-color: #272822;
-      color: #f8f8f2;
-      border: 1px solid #75715e;
-      padding: 5px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 5px 10px;
-      background-color: #66d9ef;
-      color: #272822;
-      border: none;
-      cursor: pointer;
-    }
-    .correct {
-      color: #a6e22e;
-    }
-    .wrong {
-      color: #f92672;
-    }
-  </style>
-</head>
-<body>
-  <h1>Exercícios de Laços em Java - Parte 2</h1>
-  <div id="container"></div>
+<div id="ex5" class="exercise"></div>
+<div id="ex6a" class="exercise"></div>
+<div id="ex6b" class="exercise"></div>
 
-  <script>
-    function criarExercicios() {
-      const container = document.getElementById('container');
-      container.innerHTML = '';
+<script>
+  // Função para verificar a resposta
+  function verificarResposta(id, correta) {
+    const input = document.getElementById(id);
+    const result = document.getElementById(id + '-result');
+    if (Number(input.value) === correta) {
+      result.innerHTML = ' ✅ Correto';
+      result.className = 'correct';
+    } else {
+      result.innerHTML = ` ❌ Errado (Correto: ${correta})`;
+      result.className = 'wrong';
+    }
+  }
 
-      const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  // Geração dinâmica dos exercícios, mas inserindo diretamente em divs estáticas
+  (() => {
+    const getRandom = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-      // Exercício 5
-      let A = 0, B = 0, C = getRandom(2, 5), D = 0;
-      for (A = 0; A < 5; A++) {
-        B = A + 3;
-        C++;
-        D = B - C;
-      }
-      const code5 =
+    // Exercício 5
+    let A = 0, B = 0, C = getRandom(2, 5), D = 0;
+    for (A = 0; A < 5; A++) {
+      B = A + 3;
+      C++;
+      D = B - C;
+    }
+    const code5 =
 `int A, B, C=${C - 5}, D=0;
 for (A = 0; A < 5; A++) {
   B = A + 3;
@@ -73,90 +35,110 @@ for (A = 0; A < 5; A++) {
   D = B - C;
 }
 // Valor final de B, C, D`;
-      const ex5 = document.createElement('div');
-      ex5.className = 'exercise';
-      ex5.innerHTML = `
-        <div class="code"><pre>${code5}</pre></div>
-        <label class="input-label">B final:</label>
-        <input type="text" id="resp5B">
-        <button onclick="verificarResposta('resp5B', ${B})">Verificar</button>
-        <span id="resp5B-result"></span><br>
-        <label class="input-label">C final:</label>
-        <input type="text" id="resp5C">
-        <button onclick="verificarResposta('resp5C', ${C})">Verificar</button>
-        <span id="resp5C-result"></span><br>
-        <label class="input-label">D final:</label>
-        <input type="text" id="resp5D">
-        <button onclick="verificarResposta('resp5D', ${D})">Verificar</button>
-        <span id="resp5D-result"></span>
-      `;
-      container.appendChild(ex5);
 
-      // Exercício 6a corrigido
-      let a6 = getRandom(2, 4);
-      let b6 = getRandom(7, 10);
-      let i6 = a6; // Valor inicial de 'i' é igual ao valor inicial de 'a'
-      let aTmp = a6, bTmp = b6;
+    document.getElementById('ex5').innerHTML = `
+      <div class="code"><pre>${code5}</pre></div>
+      <label class="input-label">B final:</label>
+      <input type="text" id="resp5B">
+      <button onclick="verificarResposta('resp5B', ${B})">Verificar</button>
+      <span id="resp5B-result"></span><br>
+      <label class="input-label">C final:</label>
+      <input type="text" id="resp5C">
+      <button onclick="verificarResposta('resp5C', ${C})">Verificar</button>
+      <span id="resp5C-result"></span><br>
+      <label class="input-label">D final:</label>
+      <input type="text" id="resp5D">
+      <button onclick="verificarResposta('resp5D', ${D})">Verificar</button>
+      <span id="resp5D-result"></span>
+    `;
 
-      // Simular o laço for
-      for (; i6 < bTmp; aTmp += 3, bTmp--);
-
-      // Cálculo correto: usar o valor final de 'aTmp', o valor inicial de 'a6' como 'i', e o valor final de 'bTmp'
-      const result6a = aTmp + i6 - bTmp;
-
-      // Código Java gerado
-      const code6a =
+    // Exercício 6a
+    let a6 = getRandom(2, 4);
+    let b6 = getRandom(7, 10);
+    let i6 = a6;
+    let aTmp = a6, bTmp = b6;
+    for (; i6 < bTmp; aTmp += 3, bTmp--);
+    const result6a = aTmp + i6 - bTmp;
+    const code6a =
 `int a = ${a6}, b = ${b6}, i;
 for (i = a; i < b; a += 3, b--);
 System.out.println(a + i - b);`;
 
-      container.appendChild(criarExercicio(code6a, result6a, '6a'));
+    document.getElementById('ex6a').innerHTML = `
+      <div class="code"><pre>${code6a}</pre></div>
+      <label class="input-label">Resposta:</label>
+      <input type="text" id="resp6a">
+      <button onclick="verificarResposta('resp6a', ${result6a})">Verificar</button>
+      <span id="resp6a-result"></span>
+    `;
 
-      // Exercício 6b
-      let A6 = getRandom(30, 40);
-      let B6 = getRandom(15, 20);
-      let Aend = A6, Bend = B6;
-      while (Bend > 5) {
-        Aend--;
-        Bend = Math.floor(Bend / 2);
-      }
-      const result6b = Aend - Bend;
-      const code6b =
+    // Exercício 6b
+    let A6 = getRandom(30, 40);
+    let B6 = getRandom(15, 20);
+    let Aend = A6, Bend = B6;
+    while (Bend > 5) {
+      Aend--;
+      Bend = Math.floor(Bend / 2);
+    }
+    const result6b = Aend - Bend;
+    const code6b =
 `int A = ${A6}, B = ${B6};
 do {
   A--;
   B /= 2;
 } while(B > 5);
 System.out.println(A - B);`;
-      container.appendChild(criarExercicio(code6b, result6b, '6b'));
-    }
 
-    function criarExercicio(codigo, resposta, idSufixo) {
-      const div = document.createElement('div');
-      div.className = 'exercise';
-      div.innerHTML = `
-        <div class="code"><pre>${codigo}</pre></div>
-        <label class="input-label">Resposta:</label>
-        <input type="text" id="resp${idSufixo}">
-        <button onclick="verificarResposta('resp${idSufixo}', ${resposta})">Verificar</button>
-        <span id="resp${idSufixo}-result"></span>
-      `;
-      return div;
-    }
+    document.getElementById('ex6b').innerHTML = `
+      <div class="code"><pre>${code6b}</pre></div>
+      <label class="input-label">Resposta:</label>
+      <input type="text" id="resp6b">
+      <button onclick="verificarResposta('resp6b', ${result6b})">Verificar</button>
+      <span id="resp6b-result"></span>
+    `;
+  })();
+</script>
 
-    function verificarResposta(id, correta) {
-      const input = document.getElementById(id);
-      const result = document.getElementById(id + '-result');
-      if (Number(input.value) === correta) {
-        result.innerHTML = ' ✅ Correto';
-        result.className = 'correct';
-      } else {
-        result.innerHTML = ` ❌ Errado (Correto: ${correta})`;
-        result.className = 'wrong';
-      }
-    }
-
-    window.onload = criarExercicios;
-  </script>
-</body>
-</html>
+<style>
+  body {
+    background-color: #272822;
+    color: #f8f8f2;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+  }
+  .exercise {
+    background-color: #1e1f1c;
+    border: 1px solid #3e3d32;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  .code pre {
+    color: #a6e22e;
+    white-space: pre-wrap;
+  }
+  .input-label {
+    color: #66d9ef;
+  }
+  input {
+    background-color: #272822;
+    color: #f8f8f2;
+    border: 1px solid #75715e;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #66d9ef;
+    color: #272822;
+    border: none;
+    cursor: pointer;
+  }
+  .correct {
+    color: #a6e22e;
+  }
+  .wrong {
+    color: #f92672;
+  }
+</style>

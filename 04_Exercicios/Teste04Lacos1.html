@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercícios Java Aleatórios - Estilo Sublime Monokai</title>
+  <style>
+    body {
+      background-color: #272822;
+      color: #f8f8f2;
+      font-family: Consolas, monospace;
+      padding: 20px;
+    }
+    .exercicio {
+      background-color: #1e1f1c;
+      border-left: 5px solid #66d9ef;
+      margin: 20px 0;
+      padding: 15px;
+    }
+    pre {
+      color: #a6e22e;
+    }
+    input {
+      background-color: #3e3d32;
+      color: #f8f8f2;
+      border: 1px solid #555;
+      padding: 5px;
+      margin-top: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #66d9ef;
+      color: #272822;
+      border: none;
+      padding: 10px;
+      margin-top: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .resposta {
+      color: #fd971f;
+      margin-top: 5px;
+    }
+    .correta {
+      color: #a6e22e;
+    }
+    .errada {
+      color: #f92672;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exercícios Java - Preveja o Resultado</h1>
+  <p>Digite sua resposta e confira se está correta. Os valores mudam a cada execução.</p>
+  <div id="conteudo"></div>
+  <button onclick="gerarExercicios()">Gerar Novos Exercícios</button>
+
+  <script>
+    function gerarExercicios() {
+      const conteudo = document.getElementById("conteudo");
+      conteudo.innerHTML = "";
+
+      // EXERCÍCIO 1
+      let A1 = Math.floor(Math.random() * 5) + 1;
+      let X1 = (Math.random() * 0.9 + 0.1).toFixed(2);
+      let A1copy = A1;
+      while (A1copy < 10) A1copy++;
+      let Y1final = (A1copy * parseFloat(X1)).toFixed(2);
+      conteudo.innerHTML += gerarHTMLExercicioDuplo(
+        1,
+        `int A = ${A1};\ndouble X = ${X1}, Y = A * X;\nwhile (A < 10) {\n  A++;\n  Y = A * X;\n}`,
+        A1copy,
+        Y1final,
+        "Valor final de A",
+        "Valor final de Y"
+      );
+
+      // EXERCÍCIO 2
+      let limite = Math.floor(Math.random() * 4); // entre 0 e 3
+      let valor1 = limite + 9;
+      let valor2 = limite + 10;
+      conteudo.innerHTML += gerarHTMLExercicioDuplo(
+        2,
+        `int y = 5;\nfor (int i = X; i > ${limite}; i -= 2)\n  System.out.print(y++);\n// Saída desejada: 56789`,
+        valor1,
+        valor2,
+        "Valor possível 1 de X",
+        "Valor possível 2 de X"
+      );
+
+      // EXERCÍCIO 3
+      let A3 = Math.floor(Math.random() * 5) + 1;
+      let R3 = Math.floor(Math.random() * 10) + 10;
+      let A3copy = A3;
+      let R3copy = R3;
+      do {
+        A3copy += 3;
+        R3copy--;
+      } while (A3copy < R3copy);
+      let resultado3 = A3copy + R3copy;
+      conteudo.innerHTML += gerarHTMLExercicio(
+        3,
+        `int A = ${A3}, R = ${R3};\ndo {\n  A += 3;\n  R--;\n} while (A < R);\nSystem.out.print(A + R);`,
+        resultado3
+      );
+    }
+
+    function gerarHTMLExercicio(numero, codigo, resposta, label = "Resposta") {
+      return `
+        <div class="exercicio">
+          <strong>Exercício ${numero}</strong>
+          <pre>${codigo}</pre>
+          <label>${label}:</label>
+          <input type="text" onblur="verificarResposta(this, '${resposta}')">
+          <div class="resposta"></div>
+        </div>
+      `;
+    }
+
+    function gerarHTMLExercicioDuplo(numero, codigo, resposta1, resposta2, label1, label2) {
+      return `
+        <div class="exercicio">
+          <strong>Exercício ${numero}</strong>
+          <pre>${codigo}</pre>
+          <label>${label1}:</label>
+          <input type="text" onblur="verificarResposta(this, '${resposta1}')">
+          <div class="resposta"></div>
+          <label>${label2}:</label>
+          <input type="text" onblur="verificarResposta(this, '${resposta2}')">
+          <div class="resposta"></div>
+        </div>
+      `;
+    }
+
+    function verificarResposta(input, correta) {
+      const div = input.nextElementSibling;
+      if (input.value.trim() === correta.toString()) {
+        div.textContent = "✔ Correto!";
+        div.className = "resposta correta";
+      } else {
+        div.textContent = `✘ Errado! Resposta correta: ${correta}`;
+        div.className = "resposta errada";
+      }
+    }
+
+    gerarExercicios(); // Gera exercícios ao carregar
+  </script>
+</body>
+</html>

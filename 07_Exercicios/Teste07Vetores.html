@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Vetores</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #272822;
+      color: #f8f8f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #66d9ef;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .code-block {
+      background-color: #1e1e1e;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .input-group {
+      margin-top: 20px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #a6e22e;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background-color: #3e3d3d;
+      color: #f8f8f2;
+      border: 1px solid #66d9ef;
+      border-radius: 3px;
+    }
+    .result {
+      margin-top: 20px;
+      color: #f92672;
+    }
+    button {
+      padding: 10px 15px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background-color: #66d9ef;
+      color: #272822;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a6e22e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Testes com Vetores</h1>
+
+    <!-- Código 1 -->
+    <div class="code-block">
+      <pre id="formula1"></pre>
+    </div>
+    <div id="exercise1">
+      <h2>Exercício 1</h2>
+      <p>Digite os valores que você calculou para o vetor:</p>
+      <div class="input-group">
+        <label>V[0]: <input type="number" id="v1_0"></label>
+        <label>V[1]: <input type="number" id="v1_1"></label>
+        <label>V[2]: <input type="number" id="v1_2"></label>
+        <label>V[3]: <input type="number" id="v1_3"></label>
+        <label>V[4]: <input type="number" id="v1_4"></label>
+      </div>
+      <button onclick="checkAnswers(1)">Verificar Respostas</button>
+      <div class="result" id="result1"></div>
+    </div>
+
+    <!-- Código 2 -->
+    <div class="code-block">
+      <pre id="formula2"></pre>
+    </div>
+    <div id="exercise2">
+      <h2>Exercício 2</h2>
+      <p>Digite os valores que você calculou para o vetor:</p>
+      <div class="input-group">
+        <label>V[0]: <input type="number" id="v2_0"></label>
+        <label>V[1]: <input type="number" id="v2_1"></label>
+        <label>V[2]: <input type="number" id="v2_2"></label>
+        <label>V[3]: <input type="number" id="v2_3"></label>
+        <label>V[4]: <input type="number" id="v2_4"></label>
+      </div>
+      <button onclick="checkAnswers(2)">Verificar Respostas</button>
+      <div class="result" id="result2"></div>
+    </div>
+  </div>
+
+  <script>
+    // Função para gerar um número aleatório entre -10 e 10
+    function randomCoefficient() {
+      return Math.floor(Math.random() * 11) - 5; // Gera números entre -5 e 5
+    }
+
+    // Gerar fórmulas aleatórias
+    let a1 = randomCoefficient(), b1 = randomCoefficient(), c1 = randomCoefficient();
+    let a2 = randomCoefficient(), b2 = randomCoefficient(), c2 = randomCoefficient();
+
+    // Exibir as fórmulas geradas
+    document.getElementById('formula1').textContent = 
+      `V[i] = ${a1} * i * i + (${b1}) * i + (${c1})`;
+    document.getElementById('formula2').textContent = 
+      `V[i] = ${a2} * i * i + (${b2}) * i + (${c2})`;
+
+    // Função para calcular os vetores com base nas fórmulas aleatórias
+    function calculateVectors() {
+      const vector1 = [];
+      for (let i = 4; i >= 0; i--) {
+        vector1.push(a1 * i * i + b1 * i + c1);
+      }
+
+      const vector2 = [];
+      for (let i = 0; i < 5; i++) {
+        vector2.push(a2 * i * i + b2 * i + c2);
+      }
+
+      return { vector1, vector2 };
+    }
+
+    // Armazena os vetores gerados
+    let currentVectors = calculateVectors();
+
+    // Função para verificar as respostas
+    function checkAnswers(exercise) {
+      const resultDiv = document.getElementById(`result${exercise}`);
+      resultDiv.innerHTML = '';
+
+      if (exercise === 1) {
+        let correct = true;
+
+        // Mapear os valores de vector1 para a ordem visual (V[0], V[1], ..., V[4])
+        const mappedVector1 = [...currentVectors.vector1].reverse();
+
+        for (let i = 0; i < 5; i++) {
+          const inputValue = parseInt(document.getElementById(`v1_${i}`).value, 10);
+          if (inputValue !== mappedVector1[i]) {
+            correct = false;
+            resultDiv.innerHTML += `V[${i}] está errado. O valor correto é ${mappedVector1[i]}.<br>`;
+          }
+        }
+        if (correct) {
+          resultDiv.innerHTML = 'Parabéns! Todas as respostas estão corretas!';
+        }
+      } else if (exercise === 2) {
+        let correct = true;
+        for (let i = 0; i < 5; i++) {
+          const inputValue = parseInt(document.getElementById(`v2_${i}`).value, 10);
+          if (inputValue !== currentVectors.vector2[i]) {
+            correct = false;
+            resultDiv.innerHTML += `V[${i}] está errado. O valor correto é ${currentVectors.vector2[i]}.<br>`;
+          }
+        }
+        if (correct) {
+          resultDiv.innerHTML = 'Parabéns! Todas as respostas estão corretas!';
+        }
+      }
+    }
+
+    // Botão para gerar novos vetores aleatórios
+    function generateNewVectors() {
+      // Gerar novos coeficientes aleatórios
+      a1 = randomCoefficient(); b1 = randomCoefficient(); c1 = randomCoefficient();
+      a2 = randomCoefficient(); b2 = randomCoefficient(); c2 = randomCoefficient();
+
+      // Atualizar as fórmulas exibidas
+      document.getElementById('formula1').textContent = 
+        `V[i] = ${a1} * i * i + (${b1}) * i + (${c1})`;
+      document.getElementById('formula2').textContent = 
+        `V[i] = ${a2} * i * i + (${b2}) * i + (${c2})`;
+
+      // Recalcular os vetores
+      currentVectors = calculateVectors();
+
+      // Limpar resultados anteriores
+      document.getElementById('result1').innerHTML = '';
+      document.getElementById('result2').innerHTML = '';
+
+      alert('Novas fórmulas e vetores gerados! Tente novamente.');
+    }
+
+    // Adiciona botão para gerar novas fórmulas e vetores
+    document.write('<button style="margin-top: 20px;" onclick="generateNewVectors()">Gerar Novas Fórmulas e Vetores</button>');
+  </script>
+</body>
+</html>

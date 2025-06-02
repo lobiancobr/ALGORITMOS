@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teste de Vetores</title>
+  <title>Teste com Vetores</title>
   <style>
     body {
       font-family: 'Courier New', Courier, monospace;
@@ -106,6 +106,9 @@
       <button onclick="checkAnswers(2)">Verificar Respostas</button>
       <div class="result" id="result2"></div>
     </div>
+
+    <!-- Botão dinâmico será adicionado aqui -->
+    <div id="button-container"></div>
   </div>
 
   <script>
@@ -200,8 +203,13 @@
       alert('Novas fórmulas e vetores gerados! Tente novamente.');
     }
 
-    // Adiciona botão para gerar novas fórmulas e vetores
-    document.write('<button style="margin-top: 20px;" onclick="generateNewVectors()">Gerar Novas Fórmulas e Vetores</button>');
+    // Substituir document.write por document.createElement
+    const buttonContainer = document.getElementById('button-container');
+    const newButton = document.createElement('button');
+    newButton.textContent = 'Gerar Novas Fórmulas e Vetores';
+    newButton.style.marginTop = '20px';
+    newButton.onclick = generateNewVectors;
+    buttonContainer.appendChild(newButton);
   </script>
 </body>
 </html>

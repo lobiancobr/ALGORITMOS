@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Vetores - Tema Monokai</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #272822;
+      color: #f8f8f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #66d9ef;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .code-block {
+      background-color: #1e1e1e;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .input-group {
+      margin-top: 20px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #a6e22e;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background-color: #3e3d3d;
+      color: #f8f8f2;
+      border: 1px solid #66d9ef;
+      border-radius: 3px;
+    }
+    .result {
+      margin-top: 20px;
+      color: #f92672;
+    }
+    button {
+      padding: 10px 15px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      background-color: #66d9ef;
+      color: #272822;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a6e22e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Testes de Vetores com Fórmulas Aleatórias</h1>
+
+    <!-- Exercício 3 -->
+    <div id="exercise3">
+      <h2>Exercício 3</h2>
+      <p>Dado o vetor abaixo, calcule a soma de todos os elementos após as operações:</p>
+      <div class="code-block">
+        <pre id="formula3"></pre>
+      </div>
+      <div class="input-group">
+        <label>Soma: <input type="number" id="sum3"></label>
+      </div>
+      <button onclick="checkAnswers(3)">Verificar Resposta</button>
+      <div class="result" id="result3"></div>
+    </div>
+
+    <!-- Exercício 4 -->
+    <div id="exercise4">
+      <h2>Exercício 4</h2>
+      <p>Dado o vetor abaixo, escreva os valores finais após as trocas:</p>
+      <div class="code-block">
+        <pre id="formula4"></pre>
+      </div>
+      <div class="input-group">
+        <label>V[0]: <input type="number" id="v4_0"></label>
+        <label>V[1]: <input type="number" id="v4_1"></label>
+        <label>V[2]: <input type="number" id="v4_2"></label>
+        <label>V[3]: <input type="number" id="v4_3"></label>
+        <label>V[4]: <input type="number" id="v4_4"></label>
+      </div>
+      <button onclick="checkAnswers(4)">Verificar Respostas</button>
+      <div class="result" id="result4"></div>
+    </div>
+
+    <!-- Botão dinâmico será adicionado aqui -->
+    <div id="button-container"></div>
+  </div>
+
+  <script>
+    // Função para gerar um número aleatório entre min e max
+    function randomValue(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Gerar vetores aleatórios
+    let vector3 = Array.from({ length: 6 }, () => randomValue(0, 10));
+    let vector4 = Array.from({ length: 5 }, () => randomValue(1, 10) * 10);
+
+    // Operações no vetor 3
+    const modifiedVector3 = [...vector3];
+    modifiedVector3[2] += 5; // Incrementa a posição 2 em 5
+    modifiedVector3[4] -= 3; // Decrementa a posição 4 em 3
+    const sumVector3 = modifiedVector3.reduce((acc, val) => acc + val, 0);
+
+    // Trocas no vetor 4
+    const swappedVector4 = [...vector4];
+    [swappedVector4[1], swappedVector4[3]] = [swappedVector4[3], swappedVector4[1]]; // Swap entre V[1] e V[3]
+    [swappedVector4[0], swappedVector4[4]] = [swappedVector4[4], swappedVector4[0]]; // Swap entre V[0] e V[4]
+
+    // Exibir as descrições dos exercícios no formato Java
+    document.getElementById('formula3').textContent = 
+      `Vetor inicial: int V[6] = {${vector3.join(',')}};\nOperações: V[2] += 5; V[4] -= 3;`;
+    document.getElementById('formula4').textContent = 
+      `Vetor inicial: int V[5] = {${vector4.join(',')}};\nTrocas: swap(V[1], V[3]); swap(V[0], V[4]);`;
+
+    // Função para verificar as respostas
+    function checkAnswers(exercise) {
+      const resultDiv = document.getElementById(`result${exercise}`);
+      resultDiv.innerHTML = '';
+
+      if (exercise === 3) {
+        const inputValue = parseInt(document.getElementById('sum3').value, 10);
+        if (inputValue !== sumVector3) {
+          resultDiv.innerHTML = `Resposta incorreta. A soma correta é ${sumVector3}.`;
+        } else {
+          resultDiv.innerHTML = 'Parabéns! Sua resposta está correta!';
+        }
+      } else if (exercise === 4) {
+        let correct = true;
+        for (let i = 0; i < 5; i++) {
+          const inputValue = parseInt(document.getElementById(`v4_${i}`).value, 10);
+          if (inputValue !== swappedVector4[i]) {
+            correct = false;
+            resultDiv.innerHTML += `V[${i}] está errado. O valor correto é ${swappedVector4[i]}.<br>`;
+          }
+        }
+        if (correct) {
+          resultDiv.innerHTML = 'Parabéns! Todas as respostas estão corretas!';
+        }
+      }
+    }
+
+    // Botão para gerar novos vetores aleatórios
+    function generateNewVectors() {
+      // Gerar novos vetores aleatórios
+      vector3 = Array.from({ length: 6 }, () => randomValue(0, 10));
+      vector4 = Array.from({ length: 5 }, () => randomValue(1, 10) * 10);
+
+      // Operações no vetor 3
+      const modifiedVector3 = [...vector3];
+      modifiedVector3[2] += 5;
+      modifiedVector3[4] -= 3;
+      const sumVector3 = modifiedVector3.reduce((acc, val) => acc + val, 0);
+
+      // Trocas no vetor 4
+      const swappedVector4 = [...vector4];
+      [swappedVector4[1], swappedVector4[3]] = [swappedVector4[3], swappedVector4[1]];
+      [swappedVector4[0], swappedVector4[4]] = [swappedVector4[4], swappedVector4[0]];
+
+      // Atualizar as descrições dos exercícios no formato Java
+      document.getElementById('formula3').textContent = 
+        `Vetor inicial: int V[6] = {${vector3.join(',')}};\nOperações: V[2] += 5; V[4] -= 3;`;
+      document.getElementById('formula4').textContent = 
+        `Vetor inicial: int V[5] = {${vector4.join(',')}};\nTrocas: swap(V[1], V[3]); swap(V[0], V[4]);`;
+
+      // Limpar resultados anteriores
+      document.getElementById('result3').innerHTML = '';
+      document.getElementById('result4').innerHTML = '';
+    }
+
+    // Substituir document.write por document.createElement
+    const buttonContainer = document.getElementById('button-container');
+    const newButton = document.createElement('button');
+    newButton.textContent = 'Gerar Novos Vetores';
+    newButton.style.marginTop = '20px';
+    newButton.onclick = generateNewVectors;
+    buttonContainer.appendChild(newButton);
+  </script>
+</body>
+</html>

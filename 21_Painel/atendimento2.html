@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Atendimento</title>
+    <!-- Adicione os links para as bibliotecas do Bootstrap aqui -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Painel de Atendimento</h1>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Painel de Entrada das Senhas -->
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-header bg-info text-white">
+                        <h2>Painel de Entrada de Senhas</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Adicione o formulário ou componentes para entrada de senhas aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vídeo ou Carrossel de Mídia -->
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-header bg-secondary text-white">
+                        <h2>Mídia</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="videoCarousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <!-- Adicione cada vídeo como um item do carrossel -->
+                                <div class="carousel-item active">
+                                    <video width="100%" controls autoplay>
+                                        <source src="video1.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="carousel-item">
+                                    <video width="100%" controls autoplay>
+                                        <source src="video2.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="carousel-item">
+                                    <video width="100%" controls autoplay>
+                                        <source src="video3.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel de Atendimento das Senhas -->
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-header bg-success text-white">
+                        <h2>Painel de Atendimento de Senhas</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Adicione o componente para mostrar as senhas sendo atendidas aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Atual (quem acabou de chegar e quem está sendo atendido) -->
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h2>Painel Atual</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Adicione o componente para mostrar quem chegou e quem está sendo atendido aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts do Bootstrap (jQuery e Popper.js são necessários para o Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Inicializa o carrossel
+        $('#videoCarousel').carousel();
+
+        // Lista de vídeos na pasta raiz
+        var videos = ["video1.mp4", "video2.mp4", "video3.mp4"];
+
+        // Embaralha a lista de vídeos
+        for (var i = videos.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            [videos[i], videos[j]] = [videos[j], videos[i]];
+        }
+
+        // Preenche os itens do carrossel com vídeos aleatórios
+        for (var i = 0; i < videos.length; i++) {
+            var videoItem = document.createElement("div");
+            videoItem.classList.add("carousel-item");
+            if (i === 0) {
+                videoItem.classList.add("active");
+            }
+            var video = document.createElement("video");
+            video.setAttribute("width", "100%");
+            video.setAttribute("controls", "controls");
+            var source = document.createElement("source");
+            source.setAttribute("src", videos[i]);
+            source.setAttribute("type", "video/mp4");
+            video.appendChild(source);
+            videoItem.appendChild(video);
+            document.querySelector(".carousel-inner").appendChild(videoItem);
+        }
+    </script>
+</body>
+</html>

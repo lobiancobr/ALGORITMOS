@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercícios de String em Java</title>
+  <style>
+    body {
+      background-color: #272822;
+      color: #f8f8f2;
+      font-family: Consolas, monospace;
+      padding: 20px;
+    }
+    h1 {
+      color: #66d9ef;
+    }
+    .exercise {
+      background-color: #1e1f1c;
+      border: 1px solid #3e3d32;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #66d9ef;
+      color: #272822;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+    button:hover {
+      background-color: #a1efe4;
+    }
+    code {
+      display: block;
+      background-color: #3e3d32;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+    input[type="text"] {
+      padding: 6px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
+      background-color: #3e3d32;
+      color: #f8f8f2;
+    }
+    .feedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .correct {
+      background-color: #3c763d;
+      color: #dff0d8;
+    }
+    .incorrect {
+      background-color: #8b0000;
+      color: #f2dede;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exercícios Interativos de Strings em Java</h1>
+  <button onclick="gerarExercicios()">Gerar Novos Exercícios</button>
+  <div id="exercicios"></div>
+
+  <script>
+    const exemplos = {
+      charAt: str => {
+        let index = Math.floor(Math.random() * str.length);
+        return {
+          codigo: `String texto = "${str}";\nSystem.out.println(texto.charAt(${index}));`,
+          resposta: str.charAt(index)
+        };
+      },
+      endsWith: str => {
+        let suffix = str.slice(-2);
+        return {
+          codigo: `String texto = "${str}";\nSystem.out.println(texto.endsWith("${suffix}"));`,
+          resposta: str.endsWith(suffix)
+        };
+      },
+      compareTo: (a, b) => {
+        return {
+          codigo: `String a = "${a}";\nString b = "${b}";\nSystem.out.println(a.compareTo(b));`,
+          resposta: a.localeCompare(b)
+        };
+      },
+      indexOf: str => {
+        let char = str.charAt(Math.floor(Math.random() * str.length));
+        return {
+          codigo: `String texto = "${str}";\nSystem.out.println(texto.indexOf("${char}"));`,
+          resposta: str.indexOf(char)
+        };
+      },
+      replaceAll: str => {
+        let alvo = str.charAt(0);
+        let sub = '#';
+        return {
+          codigo: `String texto = "${str}";\nSystem.out.println(texto.replaceAll("${alvo}", "${sub}"));`,
+          resposta: str.replaceAll(alvo, sub)
+        };
+      },
+      substring: str => {
+        let start = Math.floor(Math.random() * (str.length - 2));
+        let end = start + 2;
+        return {
+          codigo: `String texto = "${str}";\nSystem.out.println(texto.substring(${start}, ${end}));`,
+          resposta: str.substring(start, end)
+        };
+      }
+    };
+
+    function gerarStringAleatoria(tamanho = 6) {
+      let letras = "abcdefghijklmnopqrstuvwxyz";
+      return Array.from({ length: tamanho }, () => letras[Math.floor(Math.random() * letras.length)]).join("");
+    }
+
+    function gerarExercicios() {
+      const container = document.getElementById("exercicios");
+      container.innerHTML = "";
+
+      const metodos = Object.keys(exemplos);
+      metodos.forEach((metodo, index) => {
+        let str1 = gerarStringAleatoria();
+        let str2 = gerarStringAleatoria();
+        const exemplo = metodo === "compareTo"
+          ? exemplos[metodo](str1, str2)
+          : exemplos[metodo](str1);
+
+        const div = document.createElement("div");
+        div.className = "exercise";
+        const id = `ex${index}`;
+        div.innerHTML = `
+          <strong>Exercício ${index + 1} - ${metodo}()</strong>
+          <code>${exemplo.codigo}</code>
+          <p><strong>O que será impresso?</strong></p>
+          <input type="text" id="${id}-input" placeholder="Digite sua resposta..." />
+          <button onclick="verificarResposta('${id}', \`${exemplo.resposta}\`)">Verificar</button>
+          <div id="${id}-feedback" class="feedback"></div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function verificarResposta(id, respostaCorreta) {
+      const input = document.getElementById(`${id}-input`);
+      const feedback = document.getElementById(`${id}-feedback`);
+      const respostaUsuario = input.value.trim();
+
+      if (respostaUsuario === respostaCorreta) {
+        feedback.innerHTML = "✅ Correto!";
+        feedback.className = "feedback correct";
+      } else {
+        feedback.innerHTML = `❌ Incorreto. A resposta correta é: <strong>${respostaCorreta}</strong>`;
+        feedback.className = "feedback incorrect";
+      }
+    }
+
+    window.onload = gerarExercicios;
+  </script>
+</body>
+</html>
